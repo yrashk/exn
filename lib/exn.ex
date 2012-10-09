@@ -12,6 +12,12 @@ defmodule Exn do
   defp ast_to_value({:+, _, [number]}) when is_number(number) do
     number
   end
+  defp ast_to_value({:access, line, [record, fields]}) do
+    record = ast_to_value(record)
+    fields = ast_to_value(fields)
+    {r, _} = Code.eval_quoted({:access, line, [record, fields]})
+    r
+  end
   defp ast_to_value({:<<>>, line, items}) do
    {b, _} = Code.eval_quoted({:<<>>, line, 
    lc item inlist items do

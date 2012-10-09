@@ -20,4 +20,9 @@ defmodule ExnTest do
     assert Exn.encode([a: 1, b: 2]) == "[a: 1, b: 2]"
     assert Exn.encode([{:b, 1}, {:a, 2}]) == "[{:b,1},{:a,2}]"
   end
+
+  test "record encoding" do
+    assert Exn.encode(1..2) == "Range[first: 1, last: 2]"
+    assert Exn.decode("Range[first: 1, last: 2]") == 1..2
+  end
 end
