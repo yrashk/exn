@@ -12,6 +12,15 @@ defmodule Exn do
   defp ast_to_value({:+, _, [number]}) when is_number(number) do
     number
   end
+  defp ast_to_value({:__aliases__, _, aliases}) do
+    aliases = ast_to_value(aliases)
+    Module.concat aliases
+  end
+  defp ast_to_value({:"..", _, values}) do
+    values = ast_to_value(values)
+    [first, last] = values
+    first..last
+  end
   defp ast_to_value({:access, line, [record, fields]}) do
     record = ast_to_value(record)
     fields = ast_to_value(fields)

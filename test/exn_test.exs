@@ -8,6 +8,8 @@ defmodule ExnTest.Properties do
   end
 end
 
+defrecord TestRecord, a: nil
+
 defmodule ExnTest do
   use ExUnit.Case
   use Proper.Properties
@@ -21,8 +23,13 @@ defmodule ExnTest do
     assert Exn.encode([{:b, 1}, {:a, 2}]) == "[{:b,1},{:a,2}]"
   end
 
+  test "range encoding" do
+    assert Exn.encode(1..2) == "1..2"
+    assert Exn.decode("1..2") == 1..2
+  end
+
   test "record encoding" do
-    assert Exn.encode(1..2) == "Range[first: 1, last: 2]"
-    assert Exn.decode("Range[first: 1, last: 2]") == 1..2
+    assert Exn.encode(TestRecord.new(a: 1)) == "{TestRecord,[a: 1]}"
+    assert Exn.decode("{TestRecord,[a: 1]}") == {TestRecord,[a: 1]}
   end
 end
