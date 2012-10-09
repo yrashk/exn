@@ -15,4 +15,9 @@ defmodule ExnTest do
   test "module" do
     assert Proper.module(ExnTest.Properties, numtests: 1000) == []
   end
+
+  test "keyword encoding" do
+    assert Exn.encode([a: 1, b: 2]) == "[a: 1, b: 2]"
+    assert Exn.encode([{:b, 1}, {:a, 2}]) == "[{:b,1},{:a,2}]"
+  end
 end
