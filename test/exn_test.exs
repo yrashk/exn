@@ -28,6 +28,11 @@ defmodule ExnTest do
     assert Exn.decode("1..2") == 1..2
   end
 
+  test "regexp encoding" do
+    assert Exn.encode(%r(.*)) == "%r\".*\""
+    assert Exn.decode("%r\".*\"") == %r(.*)
+  end
+
   test "record encoding" do
     assert Exn.encode(TestRecord.new(a: 1)) == "{TestRecord,[a: 1]}"
     assert Exn.decode("{TestRecord,[a: 1]}") == {TestRecord,[a: 1]}

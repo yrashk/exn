@@ -2,6 +2,10 @@ defprotocol Exn.Encoder do
   def encode(term)
 end
 
+defimpl Exn.Encoder, for: Regex do
+  def encode(term), do: inspect(term)
+end
+
 defimpl Exn.Encoder, for: Tuple do
   def encode(term) when tuple_size(term) > 1 and is_atom(elem(term, 0)) do
     m = elem(term, 0)

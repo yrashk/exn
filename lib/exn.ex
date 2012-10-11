@@ -12,6 +12,9 @@ defmodule Exn do
   defp ast_to_value({:+, _, [number]}) when is_number(number) do
     number
   end
+  defp ast_to_value({:__r__, _, [val, opts]}) do
+    Regex.compile!(ast_to_value(val), ast_to_value(opts))
+  end
   defp ast_to_value({:__aliases__, _, aliases}) do
     aliases = ast_to_value(aliases)
     Module.concat aliases
