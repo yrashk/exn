@@ -45,10 +45,10 @@ defmodule Exn do
     lc item inlist items, do: ast_to_value(item)    
   end
   defp ast_to_value(item) do
-   if :ok == Macro.safe_term(item) do
-     item
-   else
-    raise DecodeError, message: "#{Macro.to_binary(item)} is invalid"
+   case Macro.safe_term(item) do
+     :ok -> item
+     {:unsafe, term} ->
+       raise DecodeError, message: "#{Macro.to_binary(term)} is invalid"
    end
   end
 
