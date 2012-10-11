@@ -9,16 +9,16 @@ defimpl Exn.Encoder, for: Tuple do
     if function_exported?(m, :__record__, 1) do
       "{#{Enum.join(Module.split(m),".")},#{Exn.Encoder.encode(m.to_keywords(term))}}"
     else
-      inspect(term)
+      inspect(term, raw: true)
     end
   end
   def encode(term) do    
-    inspect(term)
+    inspect(term, raw: true)
   end
 end
 
 defimpl Exn.Encoder, for: Any do
-  def encode(term), do: inspect(term)
+  def encode(term), do: inspect(term, raw: true)
 end
 
 defimpl Exn.Encoder, for: Range do
