@@ -2,6 +2,8 @@ defexception Exn.DecodeError, message: nil
 
 defmodule Exn.Decoder do
 
+  alias Exn.DecodeError, as: DecodeError
+
   def decode(string) when is_binary(string) do
     ast_to_value(Code.string_to_ast!(string))
   end
