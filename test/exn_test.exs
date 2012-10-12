@@ -4,7 +4,7 @@ defmodule ExnTest.Properties do
   use Proper.Properties
 
   property "encoded data, decoded back is the same data" do
-    forall x in term, do: Exn.decode(Exn.encode(x)) == x
+    forall x in oneof([binary, bitstring, list, tuple, atom, float, integer]), do: Exn.decode(Exn.encode(x)) == x
   end
 end
 
@@ -42,5 +42,10 @@ defmodule ExnTest do
     self_s = list_to_binary(pid_to_list(self))
     assert Exn.encode(self) == "%p#{self_s}"
     assert Exn.decode(Exn.encode(self)) == self
+  end
+
+  test "reference encoding" do
+    r = make_ref
+    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(r)) 
   end
 end

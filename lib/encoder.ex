@@ -1,3 +1,5 @@
+defexception Exn.EncodeError, message: nil, value: nil
+
 defprotocol Exn.Encoder do
   def encode(term)
 end
@@ -23,6 +25,10 @@ end
 
 defimpl Exn.Encoder, for: PID do
   def encode(term), do: "%p#{inspect(term, raw: true)}"
+end
+
+defimpl Exn.Encoder, for: Reference do
+  def encode(term), do: raise Exn.EncodeError, message: "References can't be encoded", value: term
 end
 
 defimpl Exn.Encoder, for: Any do
