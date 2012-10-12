@@ -22,6 +22,10 @@ defimpl Exn.Encoder, for: BitString do
   def encode(term), do: inspect(term)
 end
 
+defimpl Exn.Encoder, for: Regex do
+  def encode(term), do: inspect(term)
+end
+
 defimpl Exn.Encoder, for: Range do
   def encode(Range[first: f, last: l]), do: "#{f}..#{l}"
 end
