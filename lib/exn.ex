@@ -15,6 +15,9 @@ defmodule Exn do
   defp ast_to_value({:__r__, _, [val, opts]}) do
     Regex.compile!(ast_to_value(val), ast_to_value(opts))
   end
+  defp ast_to_value({:__p__, _, [pid, _opts]}) do
+    list_to_pid(to_char_list("<#{ast_to_value(pid)}>"))
+  end
   defp ast_to_value({:__aliases__, _, aliases}) do
     aliases = ast_to_value(aliases)
     Module.concat aliases

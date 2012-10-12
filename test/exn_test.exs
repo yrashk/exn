@@ -37,4 +37,10 @@ defmodule ExnTest do
     assert Exn.encode(TestRecord.new(a: 1)) == "{TestRecord,[a: 1]}"
     assert Exn.decode("{TestRecord,[a: 1]}") == {TestRecord,[a: 1]}
   end
+
+  test "pid encoding" do
+    self_s = list_to_binary(pid_to_list(self))
+    assert Exn.encode(self) == "%p#{self_s}"
+    assert Exn.decode(Exn.encode(self)) == self
+  end
 end

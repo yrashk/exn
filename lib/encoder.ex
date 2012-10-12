@@ -21,6 +21,10 @@ defimpl Exn.Encoder, for: Tuple do
   end
 end
 
+defimpl Exn.Encoder, for: PID do
+  def encode(term), do: "%p#{inspect(term, raw: true)}"
+end
+
 defimpl Exn.Encoder, for: Any do
   def encode(term), do: inspect(term, raw: true)
 end
