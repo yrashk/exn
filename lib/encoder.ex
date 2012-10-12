@@ -34,6 +34,26 @@ defimpl Exn.Encoder, for: Reference do
   def encode(term), do: raise Exn.EncodeError, value: term
 end
 
+defimpl Exn.Encoder, for: Atom do
+  def encode(term), do: inspect(term)
+end
+
+defimpl Exn.Encoder, for: List do
+  def encode(term), do: inspect(term)
+end
+
+defimpl Exn.Encoder, for: BitString do
+  def encode(term), do: inspect(term)
+end
+
+defimpl Exn.Encoder, for: Number do
+  def encode(term), do: inspect(term)
+end
+
+defimpl Exn.Encoder, for: Function do
+  def encode(term), do: inspect(term)
+end
+
 defimpl Exn.Encoder, for: Any do
   def encode(term), do: inspect(term, raw: true)
 end
