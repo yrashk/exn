@@ -1,4 +1,7 @@
-defexception Exn.EncodeError, message: nil, value: nil
+defexception Exn.EncodeError, value: nil do
+  def message(term) when is_reference(term), do: "References can't be encoded"
+  def message(term), do: "#{inspect term} can't be encoded"
+end
 
 defprotocol Exn.Encoder do
   def encode(term)
@@ -28,7 +31,7 @@ defimpl Exn.Encoder, for: PID do
 end
 
 defimpl Exn.Encoder, for: Reference do
-  def encode(term), do: raise Exn.EncodeError, message: "References can't be encoded", value: term
+  def encode(term), do: raise Exn.EncodeError, value: term
 end
 
 defimpl Exn.Encoder, for: Any do
