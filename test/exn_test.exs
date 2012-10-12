@@ -26,6 +26,8 @@ defmodule ExnTest do
   test "range encoding" do
     assert Exn.encode(1..2) == "1..2"
     assert Exn.decode("1..2") == 1..2
+    assert Exn.encode(-9..-1) == "-9..-1"
+    assert Exn.decode("-9..-1") == -9..-1
   end
 
   test "regexp encoding" do
@@ -44,8 +46,18 @@ defmodule ExnTest do
     assert Exn.decode(Exn.encode(self)) == self
   end
 
+  test "function encoding" do
+    f = fn() -> end
+    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(f))
+  end
+
   test "reference encoding" do
     r = make_ref
-    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(r)) 
+    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(r))
+  end
+
+  test "port encoding" do
+    p = Port.open { :spawn, :echo }, [:hide]
+    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(p))
   end
 end
