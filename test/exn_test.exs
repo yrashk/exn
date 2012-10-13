@@ -37,26 +37,26 @@ defmodule ExnTest do
 
   test "record encoding" do
     r = TestRecord.new(a: 1)
-    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(r))
+    assert Exn.EncodeError[value: ^r] = catch_error(Exn.encode(r))
   end
 
   test "pid encoding" do
     me = self
-    assert Exn.EncodeError[value: me] = catch_error(Exn.encode(me))
+    assert Exn.EncodeError[value: ^me] = catch_error(Exn.encode(me))
   end
 
   test "function encoding" do
     f = fn() -> end
-    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(f))
+    assert Exn.EncodeError[value: ^f] = catch_error(Exn.encode(f))
   end
 
   test "reference encoding" do
     r = make_ref
-    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(r))
+    assert Exn.EncodeError[value: ^r] = catch_error(Exn.encode(r))
   end
 
   test "port encoding" do
-    p = Port.open { :spawn, :echo }, [:hide]
-    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(p))
+    p = hd(Port.list)
+    assert Exn.EncodeError[value: ^p] = catch_error(Exn.encode(p))
   end
 end
