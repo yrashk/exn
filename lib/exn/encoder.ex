@@ -30,10 +30,6 @@ defimpl Exn.Encoder, for: Range do
   def encode(Range[first: f, last: l]), do: "#{f}..#{l}"
 end
 
-defimpl Exn.Encoder, for: PID do
-  def encode(term), do: "%p#{inspect(term, raw: true)}"
-end
-
 defimpl Exn.Encoder, for: Tuple do
   def encode(term) when tuple_size(term) > 1 and is_atom(elem(term, 0)) do
     m = elem(term, 0)
@@ -46,6 +42,10 @@ defimpl Exn.Encoder, for: Tuple do
   def encode(term) do
     inspect(term, raw: true)
   end
+end
+
+defimpl Exn.Encoder, for: PID do
+  def encode(term), do: raise Exn.EncodeError, value: term
 end
 
 defimpl Exn.Encoder, for: Function do

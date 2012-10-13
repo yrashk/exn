@@ -41,9 +41,8 @@ defmodule ExnTest do
   end
 
   test "pid encoding" do
-    self_s = list_to_binary(pid_to_list(self))
-    assert Exn.encode(self) == "%p#{self_s}"
-    assert Exn.decode(Exn.encode(self)) == self
+    me = self
+    assert Exn.EncodeError[value: me] = catch_error(Exn.encode(me))
   end
 
   test "function encoding" do
