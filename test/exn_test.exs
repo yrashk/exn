@@ -36,8 +36,8 @@ defmodule ExnTest do
   end
 
   test "record encoding" do
-    assert Exn.encode(TestRecord.new(a: 1)) == "{TestRecord,[a: 1]}"
-    assert Exn.decode("{TestRecord,[a: 1]}") == {TestRecord,[a: 1]}
+    r = TestRecord.new(a: 1)
+    assert Exn.EncodeError[value: r] = catch_error(Exn.encode(r))
   end
 
   test "pid encoding" do
