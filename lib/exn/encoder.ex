@@ -6,24 +6,10 @@ defprotocol Exn.Encoder do
   def encode(term)
 end
 
-defimpl Exn.Encoder, for: Atom do
-  def encode(term), do: inspect(term)
-end
-
-defimpl Exn.Encoder, for: List do
-  def encode(term), do: inspect(term)
-end
-
-defimpl Exn.Encoder, for: Number do
-  def encode(term), do: inspect(term)
-end
-
-defimpl Exn.Encoder, for: BitString do
-  def encode(term), do: inspect(term)
-end
-
-defimpl Exn.Encoder, for: Regex do
-  def encode(term), do: inspect(term)
+lc target inlist [Atom, List, Number, BitString, Regex] do
+  defimpl Exn.Encoder, for: target do
+    def encode(term), do: inspect(term)
+  end
 end
 
 defimpl Exn.Encoder, for: Range do
@@ -44,18 +30,8 @@ defimpl Exn.Encoder, for: Tuple do
   end
 end
 
-defimpl Exn.Encoder, for: PID do
-  def encode(term), do: raise Exn.EncodeError, value: term
-end
-
-defimpl Exn.Encoder, for: Function do
-  def encode(term), do: raise Exn.EncodeError, value: term
-end
-
-defimpl Exn.Encoder, for: Reference do
-  def encode(term), do: raise Exn.EncodeError, value: term
-end
-
-defimpl Exn.Encoder, for: Port do
-  def encode(term), do: raise Exn.EncodeError, value: term
+lc target inlist [PID, Function, Reference, Port] do
+  defimpl Exn.Encoder, for: target do
+    def encode(term), do: raise Exn.EncodeError, value: term
+  end
 end
