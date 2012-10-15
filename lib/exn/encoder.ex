@@ -16,12 +16,7 @@ end
 
 defimpl Exn.Encoder, for: Tuple do
   def encode(term) when tuple_size(term) > 1 and is_atom(elem(term, 0)) do
-    m = elem(term, 0)
-    if function_exported?(m, :__record__, 1) do
-      raise Exn.EncodeError, value: term
-    else
-      inspect(term, raw: true)
-    end
+    inspect(term, raw: true)
   end
   def encode(term) do
     inspect(term, raw: true)

@@ -35,11 +35,6 @@ defmodule ExnTest do
     assert Exn.decode("%r\".*\"") == %r(.*)
   end
 
-  test "record encoding" do
-    r = TestRecord.new(a: 1)
-    assert Exn.EncodeError[value: ^r] = catch_error(Exn.encode(r))
-  end
-
   test "pid encoding" do
     me = self
     assert Exn.EncodeError[value: ^me] = catch_error(Exn.encode(me))
@@ -59,4 +54,21 @@ defmodule ExnTest do
     p = hd(Port.list)
     assert Exn.EncodeError[value: ^p] = catch_error(Exn.encode(p))
   end
+
+  test "default record encoding" do
+    record = File.Stat.new
+    assert Exn.decode(Exn.encode(record)) == record 
+  end
+
+  test "overridden record encoding" do
+    record = File.Stat.new
+    {:module, module, _, _} = 
+    defimpl Exn.Encoder, for: File.Stat do
+      def encode(_), do: "custom"
+    end
+    assert Exn.encode(record) == "custom"
+    :code.delete module
+    :code.purge module
+  end
+
 end
