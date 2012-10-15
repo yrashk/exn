@@ -15,9 +15,6 @@ defimpl Exn.Encoder, for: Range do
 end
 
 defimpl Exn.Encoder, for: Tuple do
-  def encode(term) when tuple_size(term) > 1 and is_atom(elem(term, 0)) do
-    inspect(term, raw: true)
-  end
   def encode(term) do
     inspect(term, raw: true)
   end
