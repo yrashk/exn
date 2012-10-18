@@ -4,8 +4,8 @@ defmodule Exn.Decoder do
 
   alias Exn.DecodeError, as: DecodeError
 
-  def decode(string) when is_binary(string) do
-    ast_to_value(Code.string_to_ast!(string))
+  def decode(string, options) when is_binary(string) do
+    ast_to_value(Code.string_to_ast!(string, options))
   end
 
   defp ast_to_value({:-, _, [number]}) when is_number(number) do
