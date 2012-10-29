@@ -20,7 +20,7 @@ defmodule ExnTest do
 
   test "keyword encoding" do
     assert Exn.encode([a: 1, b: 2]) == "[a: 1, b: 2]"
-    assert Exn.encode([{:b, 1}, {:a, 2}]) == "[{:b,1},{:a,2}]"
+    assert Exn.encode([{:b, 1}, {:a, 2}]) == "[b: 1, a: 2]"
   end
 
   test "range encoding" do
