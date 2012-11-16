@@ -23,16 +23,35 @@ defmodule ExnTest do
     assert Exn.encode([{:b, 1}, {:a, 2}]) == "[b: 1, a: 2]"
   end
 
+  test "keyword decoding" do
+    assert Exn.decode("[a: 1, b: 2]") == [a: 1, b: 2]
+    assert Exn.decode("[{:b,1},{:a,2}]") == [b: 1, a: 2]
+  end
+
   test "range encoding" do
     assert Exn.encode(1..2) == "1..2"
-    assert Exn.decode("1..2") == 1..2
     assert Exn.encode(-9..-1) == "-9..-1"
+  end
+
+  test "range decoding" do
+    assert Exn.decode("1..2") == 1..2
     assert Exn.decode("-9..-1") == -9..-1
   end
 
   test "regexp encoding" do
     assert Exn.encode(%r(.*)) == "%r\".*\""
+  end
+
+  test "regexp decoding" do
     assert Exn.decode("%r\".*\"") == %r(.*)
+  end
+
+  test "record encoding" do
+    assert Exn.encode(TestRecord.new(a: 1)) == "{TestRecord,[a: 1]}"
+  end
+
+  test "record decoding" do
+    assert Exn.decode("{TestRecord,[a: 1]}") == {TestRecord,[a: 1]}
   end
 
   test "pid encoding" do
@@ -57,12 +76,12 @@ defmodule ExnTest do
 
   test "default record encoding" do
     record = File.Stat.new
-    assert Exn.decode(Exn.encode(record)) == record 
+    assert Exn.decode(Exn.encode(record)) == record
   end
 
   test "overridden record encoding" do
     record = File.Stat.new
-    {:module, module, _, _} = 
+    {:module, module, _, _} =
     defimpl Exn.Encoder, for: File.Stat do
       def encode(_), do: "custom"
     end
