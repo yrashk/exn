@@ -17,14 +17,11 @@ defmodule Exn.Decoder do
   defp ast_to_value({:__r__, _, [val, opts]}) do
     Regex.compile!(ast_to_value(val), ast_to_value(opts))
   end
-  defp ast_to_value({:__p__, _, [pid, _opts]}) do
-    list_to_pid(to_char_list("<#{ast_to_value(pid)}>"))
-  end
   defp ast_to_value({:__aliases__, _, aliases}) do
     aliases = ast_to_value(aliases)
     Module.concat aliases
   end
-  defp ast_to_value({:"..", _, values}) do
+  defp ast_to_value({:.., _, values}) do
     values = ast_to_value(values)
     [first, last] = values
     first..last
@@ -39,7 +36,7 @@ defmodule Exn.Decoder do
    {b, _} = Code.eval_quoted({:<<>>, line,
    lc item inlist items do
      case item do
-       {:"::", line, [v|t]} -> {:"::", line, [ast_to_value(v)|t]}
+       {:::, line, [v|t]} -> {:::, line, [ast_to_value(v)|t]}
        _ -> ast_to_value(item)
      end
    end})
