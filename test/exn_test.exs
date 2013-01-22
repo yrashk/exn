@@ -60,7 +60,7 @@ defmodule ExnTest do
   end
 
   test "function encoding" do
-    f = fn() -> end
+    f = fn() -> nil end
     assert Exn.EncodeError[value: ^f] = catch_error(Exn.encode(f))
   end
 
