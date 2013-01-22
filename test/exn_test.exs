@@ -8,8 +8,6 @@ defmodule ExnTest.Properties do
   end
 end
 
-defrecord TestRecord, a: nil
-
 defmodule ExnTest do
   use ExUnit.Case
   use Proper.Properties
@@ -44,14 +42,6 @@ defmodule ExnTest do
 
   test "regexp decoding" do
     assert Exn.decode("%r\".*\"") == %r(.*)
-  end
-
-  test "record encoding" do
-    assert Exn.encode(TestRecord.new(a: 1)) == "{TestRecord,[a: 1]}"
-  end
-
-  test "record decoding" do
-    assert Exn.decode("{TestRecord,[a: 1]}") == {TestRecord,[a: 1]}
   end
 
   test "pid encoding" do
