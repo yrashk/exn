@@ -21,5 +21,5 @@ defimpl Exn.Encoder, for: Tuple do
 end
 
 defimpl Exn.Encoder, for: [PID, Function, Reference, Port] do
-  def encode(term), do: raise Exn.EncodeError, value: term
+  def encode(term), do: raise( Exn.EncodeError, value: term )
 end
